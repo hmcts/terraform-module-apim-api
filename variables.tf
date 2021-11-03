@@ -42,6 +42,11 @@ variable "product_approval_required" {
   description = "APIM Product Approval Required"
   default     = false
 }
+variable "product_policy" {
+  type        = string
+  description = "APIM Product Policy"
+  default     = ""
+}
 
 ## APIs
 variable "apis" {

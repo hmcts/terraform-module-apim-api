@@ -14,6 +14,15 @@ resource "azurerm_api_management_product" "apim_product" {
   published             = var.product_published
   description           = var.product_discription != "" ? var.product_discription : "This is the product for ${var.product}"
 }
+resource "azurerm_api_management_product_policy" "apim_product_policy" {
+  count               = var.product_policy != "" ? 1 : 0
+  product_id          = azurerm_api_management_product.apim_product.product_id
+  api_management_name = azurerm_api_management_product.apim_product.api_management_name
+  resource_group_name = azurerm_api_management_product.apim_product.resource_group_name
+
+  xml_content = var.product_policy
+
+}
 
 
 resource "azurerm_api_management_api" "apim_apis" {
