@@ -1,41 +1,35 @@
 # terraform-module-apim-api
 
-This module is to create products within an Api Manager with APIs
+This module is to create an API within an APIM
 
 ## Example
 
 ```terraform
 module "apim_apis" {
-  source        = "git::https://github.com/hmcts/terraform-module-apim-api"
-  environment   = "sbox"
-  product       = "pip"
-  department    = "sds"
+  source      = "git::https://github.com/hmcts/terraform-module-apim-api"
+  environment = "sbox"
+  product     = "pip"
+  department  = "sds"
 
-  apis = [
-    {
-      name                  = "links-api"
-      revision              = "1"
-      protocols             = "https"
-      service_url           = "https://www.backendservice.com"
-      subscription_required = false
-      content_format        = "openapi"
-      content_value         = "{Open API Content}" 
-    }
-  ]
+  api_name                  = "links-api"
+  api_revision              = "1"
+  api_protocols             = ["https"]
+  api_service_url           = "https://www.backendservice.com"
+  api_subscription_required = false
+  api_content_format        = "openapi"
+  api_content_value         = "{Open API Content}"
 
-  api_policies = [
+
+  policy_xml_content = "<xml></xml>"
+  api_operations = [
     {
-      api_name    = "links-api"
-      xml_content = "<xml></xml>"
+      operation_id = "opt-1"
+      xml_content  = "<xml></xml>"
+      display_name = "Example Operation"
+      method       = "GET"
+      url_template = "/example"
+      description  = "Operation as example"
     }
   ]
 }
-```
-
-## Optional User
-You can also assign a user to the API, which will be added to the subscription as well.
-
-```terraform
-  user_id           = "4nc3098ey32xy2" #must be unique
-  user_has_password = true
 ```

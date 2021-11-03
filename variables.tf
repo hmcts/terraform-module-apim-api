@@ -17,92 +17,83 @@ variable "department" {
 }
 
 ## Product
-variable "product_display_name" {
+variable "product_id" {
   type        = string
   description = "APIM Product Display Name"
   default     = ""
 }
-variable "product_discription" {
-  type        = string
-  description = "APIM Product Discription"
-  default     = ""
-}
-variable "product_subscription_required" {
-  type        = bool
-  description = "APIM Product Subscription Required"
-  default     = false
-}
-variable "product_published" {
-  type        = bool
-  description = "APIM Product Published"
-  default     = true
-}
-variable "product_approval_required" {
-  type        = bool
-  description = "APIM Product Approval Required"
-  default     = false
-}
-variable "product_policy" {
-  type        = string
-  description = "APIM Product Policy"
-  default     = ""
-}
 
-## APIs
-variable "apis" {
-  type = list(object({
-    name                  = string
-    revision              = string
-    protocols             = string
-    service_url           = string
-    subscription_required = bool
-    content_format        = string
-    content_value         = string
-  }))
-  description = "Details of each API"
+
+## API
+variable "api_name" {
+  type        = string
+  description = "APIM API Name"
+}
+variable "api_revision" {
+  type        = string
+  description = "APIM API Revision"
+  default     = "1"
+}
+variable "api_protocols" {
+  type        = list(string)
+  description = "APIM API Protocols"
   default     = []
-
+}
+variable "api_service_url" {
+  type        = string
+  description = "APIM API Service URL"
+  default     = ""
   validation {
-    condition     = [for s in var.apis : contains(["", "http", "https"], s.protocols)]
-    error_message = "Protocal possible values are http and https."
-  }
-  validation {
-    condition     = [for s in var.apis : contains(["openapi", "openapi+json", "openapi+json-link", "openapi-link", "swagger-json", "swagger-link-json", "wadl-link-json", "wadl-xml", "wsdl", "wsdl-link"], s.content_format)]
-    error_message = "Content Format possible values are openapi, openapi+json, openapi+json-link, openapi-link, swagger-json, swagger-link-json, wadl-link-json, wadl-xml, wsdl and wsdl-link."
-  }
-  validation {
-    condition     = [for s in var.apis : regex("*-link-*", s.content_format) ? regex("(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})", s.content_value) : s.content_value != ""]
-    error_message = "If Content Format is '*-link-*' then Content Value must be a valid URL, else it can be an inline string."
-  }
-  validation {
-    condition     = [for s in var.apis : regex("(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})", s.service_url)]
+    condition     = var.api_service_url == "" || regex("(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})", var.api_service_url)
     error_message = "Service URL should be a valid URL."
   }
 }
-
-variable "api_policies" {
-  type = list(object({
-    api_name    = string
-    xml_content = string
-    xml_link    = string
-  }))
-  description = "Details of each API Policy"
-  default     = []
+variable "api_subscription_required" {
+  type        = bool
+  description = "APIM API subscription required"
+  default     = false
+}
+variable "api_content_format" {
+  type        = string
+  description = "APIM API Content Format"
 
   validation {
-    condition     = [for s in var.api_policies : s.xml_link != "" ? regex("(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})", s.xml_link) : s.xml_content != ""]
-    error_message = "XML Content or Link should be provided."
+    condition     = contains(["openapi", "openapi+json", "openapi+json-link", "openapi-link", "swagger-json", "swagger-link-json", "wadl-link-json", "wadl-xml", "wsdl", "wsdl-link"], var.api_content_format)
+    error_message = "Content Format possible values are openapi, openapi+json, openapi+json-link, openapi-link, swagger-json, swagger-link-json, wadl-link-json, wadl-xml, wsdl and wsdl-link."
+  }
+}
+variable "api_content_value" {
+  type        = string
+  description = "APIM API Value"
+}
+
+## Policy
+variable "policy_xml_content" {
+  type        = string
+  description = "APIM API Policy Content"
+  default     = ""
+}
+variable "policy_xml_link" {
+  type        = string
+  description = "APIM API Policy Link"
+  default     = ""
+  validation {
+    condition     = var.policy_xml_link == "" || regex("(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})", var.policy_xml_link)
+    error_message = "XML Link should be provided as a valid URL."
   }
 }
 
-## API User
-variable "user_id" {
-  type        = string
-  description = "APIM User ID"
-  default     = ""
-}
-variable "user_has_password" {
-  type        = bool
-  description = "APIM User requires password"
-  default     = false
+
+variable "api_operations" {
+  type = list(object({
+    operation_id = string
+    xml_content  = string
+    xml_link     = string
+    display_name = string
+    method       = string
+    url_template = string
+    description  = string
+  }))
+  description = "Details of each API Operation"
+  default     = []
 }
