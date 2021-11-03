@@ -46,6 +46,7 @@ resource "azurerm_api_management_api_operation" "apim_api_operation" {
 }
 resource "azurerm_api_management_api_operation_policy" "apim_api_operation_policies" {
   for_each            = { for operation in var.api_operations : operation.operation_id => operation }
+  operation_id        = each.value.operation_id
   api_name            = azurerm_api_management_api.apim_api.name
   api_management_name = azurerm_api_management_api.apim_api.api_management_name
   resource_group_name = azurerm_api_management_api.apim_api.resource_group_name
@@ -62,7 +63,7 @@ data "azurerm_api_management_product" "apim_product" {
 
 resource "azurerm_api_management_product_api" "product" {
   api_name            = azurerm_api_management_api.apim_api.name
-  product_id          = azurerm_api_management_product.apim_product.product_id
+  product_id          = data.azurerm_api_management_product.apim_product.product_id
   api_management_name = azurerm_api_management_api.apim_api.api_management_name
   resource_group_name = azurerm_api_management_api.apim_api.resource_group_name
 }
