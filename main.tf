@@ -54,10 +54,15 @@ resource "azurerm_api_management_api_operation_policy" "apim_api_operation_polic
 }
 
 
+data "azurerm_api_management_product" "apim_product" {
+  product_id          = "${var.product}-product-${local.env}"
+  resource_group_name = local.apim_rg
+  api_management_name = local.apim_name
+}
+
 resource "azurerm_api_management_product_api" "product" {
-  count               = var.product_id != "" ? 1 : 0
   api_name            = azurerm_api_management_api.apim_api.name
-  product_id          = var.product_id
+  product_id          = azurerm_api_management_product.apim_product.product_id
   api_management_name = azurerm_api_management_api.apim_api.api_management_name
   resource_group_name = azurerm_api_management_api.apim_api.resource_group_name
 }

@@ -16,14 +16,6 @@ variable "department" {
   }
 }
 
-## Product
-variable "product_id" {
-  type        = string
-  description = "APIM Product Display Name"
-  default     = ""
-}
-
-
 ## API
 variable "api_name" {
   type        = string
