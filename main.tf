@@ -51,6 +51,8 @@ resource "azurerm_api_management_api_operation_policy" "apim_api_operation_polic
   api_management_name = azurerm_api_management_api.apim_api.api_management_name
   resource_group_name = azurerm_api_management_api.apim_api.resource_group_name
   xml_content         = each.value.xml_content
+
+  depends_on = [azurerm_api_management_api_operation.apim_api_operation]
 }
 
 
