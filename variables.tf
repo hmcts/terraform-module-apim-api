@@ -72,7 +72,6 @@ variable "api_operations" {
   type = list(object({
     operation_id = string
     xml_content  = string
-    xml_link     = string
     display_name = string
     method       = string
     url_template = string
