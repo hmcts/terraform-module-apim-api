@@ -59,12 +59,12 @@ variable "api_content_value" {
 variable "policy_xml_content" {
   type        = string
   description = "APIM API Policy Content"
-  default     = ""
+  default     = null
 }
 variable "policy_xml_link" {
   type        = string
   description = "APIM API Policy Link"
-  default     = ""
+  default     = null
 }
 
 
