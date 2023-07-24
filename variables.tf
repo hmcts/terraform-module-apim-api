@@ -80,23 +80,23 @@ variable "api_operations" {
       name = string
       required = string
       type = string
-      default_value = string
+      default_value = optional(string)
     })))
     query_parameters = optional(list(object({
       name = string
       required = string
       type = string
-      default_value = string
+      default_value = optional(string)
     })))
     template_parameter = optional(object({
       name = string
       required = string
       type = string
-      default_value = string
+      default_value = optional(string)
     }))
     response = optional(object({
       status_code = string
-      description = string
+      description = optional(string)
     }))
   }))
   description = "Details of each API Operation"

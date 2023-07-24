@@ -64,15 +64,21 @@ resource "azurerm_api_management_api_operation" "apim_api_operation" {
       }
     }
   }
-  response {
-    status_code = can(each.value.response.status_code) ? each.value.response.status_code : null
-    description = can(each.value.response.description) ? each.value.response.description : null
+  dynamic "response" {
+    for_each = (each.value.response == null) ? [] : each.value.response
+    content {
+      status_code = can(each.value.response.status_code) ? each.value.response.status_code : null
+      description = can(each.value.response.description) ? each.value.response.description : null
+    }
   }
-  template_parameter {
-    name     = can(each.value.template_parameter.name) ? each.value.template_parameter.name : null
-    required = can(each.value.template_parameter.required) ? each.value.template_parameter.required : null
-    type     = can(each.value.template_parameter.type) ? each.value.template_parameter.type : null
-    default_value = can(each.value.template_parameter.default_value) ?each.value.template_parameter.default_value : null
+  dynamic "template_parameter" {
+    for_each = (each.value.template_parameter == null) ? [] : each.value.template_parameter
+    content {
+      name     = can(each.value.template_parameter.name) ? each.value.template_parameter.name : null
+      required = can(each.value.template_parameter.required) ? each.value.template_parameter.required : null
+      type     = can(each.value.template_parameter.type) ? each.value.template_parameter.type : null
+      default_value = can(each.value.template_parameter.default_value) ?each.value.template_parameter.default_value : null
+    }
   }
 }
 resource "azurerm_api_management_api_operation_policy" "apim_api_operation_policies" {
