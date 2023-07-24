@@ -46,7 +46,7 @@ resource "azurerm_api_management_api_operation" "apim_api_operation" {
 
   request {
     dynamic "header" {
-      for_each = each.value.headers
+      for_each = can(each.value.headers) ? [1] : []
       content {
         name     = header.value["name"]
         required = header.value["required"]
@@ -55,7 +55,7 @@ resource "azurerm_api_management_api_operation" "apim_api_operation" {
       }
     }
     dynamic "query_parameter" {
-      for_each = each.value.query_parameters
+      for_each = can(each.value.query_parameters) ? [1] : []
       content {
         name     = query_parameter.value["name"]
         required = query_parameter.value["required"]
@@ -65,14 +65,14 @@ resource "azurerm_api_management_api_operation" "apim_api_operation" {
     }
   }
   response {
-    status_code = each.value.response.status_code
-    description = each.value.response.description
+    status_code = can(each.value.response.status_code) ? each.value.response.status_code : null
+    description = can(each.value.response.description) ? each.value.response.description : null
   }
   template_parameter {
-    name     = each.value.template_parameter.value["name"]
-    required = each.value.template_parameter.value["required"]
-    type     = each.value.template_parameter.value["type"]
-    default_value = each.value.template_parameter.value["default_value"]
+    name     = can(each.value.template_parameter.value["name"]) ? each.value.template_parameter.value["name"] : null
+    required = can(each.value.template_parameter.value["required"]) ? each.value.template_parameter.value["required"] : null
+    type     = can(each.value.template_parameter.value["type"]) ? each.value.template_parameter.value["type"] : null
+    default_value = can(each.value.template_parameter.value["default_value"]) ?each.value.template_parameter.value["default_value"] : null
   }
 }
 resource "azurerm_api_management_api_operation_policy" "apim_api_operation_policies" {
