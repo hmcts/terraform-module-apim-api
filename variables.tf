@@ -82,6 +82,22 @@ variable "api_operations" {
       type = string
       default_value = string
     }))
+    query_parameters = list(object({
+      name = string
+      required = string
+      type = string
+      default_value = string
+    }))
+    template_parameters = object({
+      name = string
+      required = string
+      type = string
+      default_value = string
+    })
+    response = object({
+      status_code = string
+      description = string
+    })
   }))
   description = "Details of each API Operation"
   default     = []

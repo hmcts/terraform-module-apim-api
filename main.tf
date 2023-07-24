@@ -51,8 +51,28 @@ resource "azurerm_api_management_api_operation" "apim_api_operation" {
         name     = header.value["name"]
         required = header.value["required"]
         type     = header.value["type"]
+        default_value = header.value["default_value"]
       }
     }
+    dynamic "query_parameter" {
+      for_each = each.value.query_parameters
+      content {
+        name     = query_parameter.value["name"]
+        required = query_parameter.value["required"]
+        type     = query_parameter.value["type"]
+        default_value = query_parameter.value["default_value"]
+      }
+    }
+  }
+  response {
+    status_code = each.value.response.status_code
+    description = each.value.response.description
+  }
+  template_parameter {
+    name     = each.value.template_parameter.value["name"]
+    required = each.value.template_parameter.value["required"]
+    type     = each.value.template_parameter.value["type"]
+    default_value = each.value.template_parameter.value["default_value"]
   }
 }
 resource "azurerm_api_management_api_operation_policy" "apim_api_operation_policies" {
