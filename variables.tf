@@ -76,6 +76,12 @@ variable "api_operations" {
     method       = string
     url_template = string
     description  = string
+    headers = list(object({
+      name = string
+      required = string
+      type = string
+      default_value = string
+    }))
   }))
   description = "Details of each API Operation"
   default     = []
