@@ -76,28 +76,28 @@ variable "api_operations" {
     method       = string
     url_template = string
     description  = string
-    headers = list(object({
+    headers = optional(list(object({
+      name = string
+      required = string
+      type = string
+      default_value = string
+    })))
+    query_parameters = optional(list(object({
+      name = string
+      required = string
+      type = string
+      default_value = string
+    })))
+    template_parameters = optional(object({
       name = string
       required = string
       type = string
       default_value = string
     }))
-    query_parameters = list(object({
-      name = string
-      required = string
-      type = string
-      default_value = string
-    }))
-    template_parameters = object({
-      name = string
-      required = string
-      type = string
-      default_value = string
-    })
-    response = object({
+    response = optional(object({
       status_code = string
       description = string
-    })
+    }))
   }))
   description = "Details of each API Operation"
   default     = []
