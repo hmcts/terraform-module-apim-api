@@ -46,7 +46,7 @@ resource "azurerm_api_management_api_operation" "apim_api_operation" {
 
   request {
     dynamic "header" {
-      for_each = can(each.value.headers) ? [1] : []
+      for_each = can(each.value.headers) ? each.value.headers : []
       content {
         name     = header.value["name"]
         required = header.value["required"]
@@ -55,7 +55,7 @@ resource "azurerm_api_management_api_operation" "apim_api_operation" {
       }
     }
     dynamic "query_parameter" {
-      for_each = can(each.value.query_parameters) ? [1] : []
+      for_each = can(each.value.query_parameters) ? each.value.query_parameters : []
       content {
         name     = query_parameter.value["name"]
         required = query_parameter.value["required"]
