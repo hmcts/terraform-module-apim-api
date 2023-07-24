@@ -51,7 +51,7 @@ resource "azurerm_api_management_api_operation" "apim_api_operation" {
         name     = header.value["name"]
         required = header.value["required"]
         type     = header.value["type"]
-        default_value = can(header.value["default_value"]) ? header.value["default_value"] : null
+        default_value = (header.value["default_value"] == null) ? null : header.value["default_value"]
       }
     }
     dynamic "query_parameter" {
@@ -60,7 +60,7 @@ resource "azurerm_api_management_api_operation" "apim_api_operation" {
         name     = query_parameter.value["name"]
         required = query_parameter.value["required"]
         type     = query_parameter.value["type"]
-        default_value = can(query_parameter.value["default_value"]) ? query_parameter.value["default_value"] : null
+        default_value = (query_parameter.value["default_value"] == null) ? null : query_parameter.value["default_value"]
       }
     }
   }
@@ -68,7 +68,7 @@ resource "azurerm_api_management_api_operation" "apim_api_operation" {
     for_each = (each.value.response == null) ? [] : [1]
     content {
       status_code = each.value.response.status_code
-      description = can(each.value.response.description) ? each.value.response.description : null
+      description = (each.value.response.description == null) ? null : each.value.response.description
     }
   }
   dynamic "template_parameter" {
@@ -77,7 +77,7 @@ resource "azurerm_api_management_api_operation" "apim_api_operation" {
       name     = each.value.template_parameter.name
       required = each.value.template_parameter.required
       type     = each.value.template_parameter.type
-      default_value = can(each.value.template_parameter.default_value) ? each.value.template_parameter.default_value : null
+      default_value = (each.value.template_parameter.default_value == null) ? null : each.value.template_parameter.default_value
     }
   }
 }
