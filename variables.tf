@@ -88,7 +88,7 @@ variable "api_operations" {
       type = string
       default_value = string
     })))
-    template_parameters = optional(object({
+    template_parameter = optional(object({
       name = string
       required = string
       type = string
