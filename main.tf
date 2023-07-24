@@ -43,6 +43,17 @@ resource "azurerm_api_management_api_operation" "apim_api_operation" {
   method              = each.value.method
   url_template        = each.value.url_template
   description         = each.value.description
+
+  request {
+    dynamic "header" {
+      for_each = operation.headers
+      content {
+        name     = header.value["name"]
+        required = header.value["required"]
+        type     = header.value["type"]
+      }
+    }
+  }
 }
 resource "azurerm_api_management_api_operation_policy" "apim_api_operation_policies" {
   for_each            = { for operation in var.api_operations : operation.operation_id => operation }
