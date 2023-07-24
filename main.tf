@@ -91,6 +91,14 @@ resource "azurerm_api_management_api_operation_policy" "apim_api_operation_polic
 
   depends_on = [azurerm_api_management_api_operation.apim_api_operation]
 }
+resource "azurerm_api_management_api_operation_tag" "apim_api_operation_tag" {
+  for_each         = { for operation in var.api_operations : operation.operation_id => operation }
+  name             = each.value.tag.name
+  api_operation_id = each.value.operation_id
+  display_name     = each.value.tag.display_name
+
+  depends_on = [azurerm_api_management_api_operation.apim_api_operation]
+}
 
 
 data "azurerm_api_management_product" "apim_product" {
