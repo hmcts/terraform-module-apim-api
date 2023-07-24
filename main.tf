@@ -51,7 +51,7 @@ resource "azurerm_api_management_api_operation" "apim_api_operation" {
         name     = header.value["name"]
         required = header.value["required"]
         type     = header.value["type"]
-        default_value = header.value["default_value"]
+        default_value = can(header.value["default_value"]) ? header.value["default_value"] : null
       }
     }
     dynamic "query_parameter" {
@@ -60,7 +60,7 @@ resource "azurerm_api_management_api_operation" "apim_api_operation" {
         name     = query_parameter.value["name"]
         required = query_parameter.value["required"]
         type     = query_parameter.value["type"]
-        default_value = query_parameter.value["default_value"]
+        default_value = can(query_parameter.value["default_value"]) ? query_parameter.value["default_value"] : null
       }
     }
   }
@@ -69,10 +69,10 @@ resource "azurerm_api_management_api_operation" "apim_api_operation" {
     description = can(each.value.response.description) ? each.value.response.description : null
   }
   template_parameter {
-    name     = can(each.value.template_parameter.value["name"]) ? each.value.template_parameter.value["name"] : null
-    required = can(each.value.template_parameter.value["required"]) ? each.value.template_parameter.value["required"] : null
-    type     = can(each.value.template_parameter.value["type"]) ? each.value.template_parameter.value["type"] : null
-    default_value = can(each.value.template_parameter.value["default_value"]) ?each.value.template_parameter.value["default_value"] : null
+    name     = can(each.value.template_parameter.name) ? each.value.template_parameter.name : null
+    required = can(each.value.template_parameter.required) ? each.value.template_parameter.required : null
+    type     = can(each.value.template_parameter.type) ? each.value.template_parameter.type : null
+    default_value = can(each.value.template_parameter.default_value) ?each.value.template_parameter.default_value : null
   }
 }
 resource "azurerm_api_management_api_operation_policy" "apim_api_operation_policies" {
