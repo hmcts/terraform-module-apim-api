@@ -46,7 +46,7 @@ resource "azurerm_api_management_api_operation" "apim_api_operation" {
 
   request {
     dynamic "header" {
-      for_each = operation.headers
+      for_each = each.value.headers
       content {
         name     = header.value["name"]
         required = header.value["required"]
