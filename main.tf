@@ -93,7 +93,7 @@ resource "azurerm_api_management_api_operation_policy" "apim_api_operation_polic
 }
 
 output "apim_api_operation_policies_ids" {
-  value = [ for subnet in azurerm_api_management_api_operation_policy.apim_api_operation_policies : apim_api_operation_policies.id ]
+  value = [ for apim_operation_ids in azurerm_api_management_api_operation.apim_api_operation : apim_api_operation.id ]
 }
 
 
