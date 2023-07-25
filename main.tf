@@ -4,6 +4,7 @@ locals {
   apim_rg   = var.department == "sds" ? "ss-${local.env}-network-rg" : var.env == "sbox" || var.env == "perftest" || var.env == "aat" || var.env == "ithc" ? "cft-${var.env}-network-rg" : "aks-infra-${var.env}-rg"
 
   api_name = "${var.product}-${var.api_name}"
+  apim_api_operation_ids = []
 }
 
 resource "azurerm_api_management_api" "apim_api" {
@@ -92,11 +93,18 @@ resource "azurerm_api_management_api_operation_policy" "apim_api_operation_polic
   depends_on = [azurerm_api_management_api_operation.apim_api_operation]
 }
 
-output "apim_api_operation_policies_ids" {
+output "apim_api_operation_ids" {
   value = [ for apim_operation in azurerm_api_management_api_operation.apim_api_operation : {
-    operation_id = apim_operation.id
-    tag = apim_operation.tag
+    api_operation_id = apim_operation.id
+    operation_id = apim_operation.operation_id
   }]
+}
+
+resource "azurerm_api_management_api_operation_tag" "apim_api_tag" {
+  for_each         = { for operation in var.api_operations : operation.operation_id => operation }
+  name             = each.value.tag.name
+  api_operation_id = local.apim_api_operation_ids[each.value.operation_id]
+  display_name     = each.value.tag.display_name
 }
 
 
