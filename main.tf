@@ -93,7 +93,10 @@ resource "azurerm_api_management_api_operation_policy" "apim_api_operation_polic
 }
 
 output "apim_api_operation_policies_ids" {
-  value = [ for apim_operation_ids in azurerm_api_management_api_operation.apim_api_operation : apim_operation_ids.id ]
+  value = [ for apim_operation in azurerm_api_management_api_operation.apim_api_operation : {
+    operation_id = apim_operation.id
+    tag = apim_operation.tag
+  }]
 }
 
 
