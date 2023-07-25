@@ -92,14 +92,6 @@ resource "azurerm_api_management_api_operation_policy" "apim_api_operation_polic
   depends_on = [azurerm_api_management_api_operation.apim_api_operation]
 }
 
-resource "azurerm_api_management_api_operation_tag" "apim_api_tag" {
-  for_each         = { for operation in var.api_operations : operation.operation_id => operation }
-  name             = each.value.tag.name
-  api_operation_id = apim_api_operation_ids[each.value.operation_id]
-  display_name     = each.value.tag.display_name
-}
-
-
 data "azurerm_api_management_product" "apim_product" {
   product_id          = "${var.product}-product-${local.env}"
   resource_group_name = local.apim_rg

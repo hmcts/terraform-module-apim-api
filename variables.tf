@@ -76,10 +76,6 @@ variable "api_operations" {
     method       = string
     url_template = string
     description  = string
-    tag = optional(object({
-      name = string
-      display_name = string
-    }))
     headers = optional(list(object({
       name = string
       required = string
