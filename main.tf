@@ -85,7 +85,7 @@ resource "azurerm_api_management_api_operation" "apim_api_operation" {
 resource "azurerm_api_management_api_operation_tag" "apim_api_tag" {
   for_each         = { for operation in var.api_operations : operation.operation_id => operation }
   name             = each.value.tag.name
-  api_operation_id = resource.azurerm_api_management_api_operation.apim_api_operation.id
+  api_operation_id = resource.azurerm_api_management_api_operation.apim_api_operation[operation_id].id
   display_name     = each.value.tag.display_name
 }
 
