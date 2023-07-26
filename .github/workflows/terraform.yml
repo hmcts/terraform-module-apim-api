@@ -21,6 +21,23 @@ jobs:
         with:
           terraform_version: ${{ env.TF_VERSION }}
 
+      - name: Setup providers configuration
+        shell: bash
+        run: |
+          cat << EOF > provider.tf
+          terraform {
+            required_providers {
+              azurerm = {
+                version = ">=3.42.0"
+              }
+            }
+          }
+
+          provider "azurerm" {
+            features {}
+          }
+
+          EOF
       - name: Terraform Init
         run: terraform init
 
