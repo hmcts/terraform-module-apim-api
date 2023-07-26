@@ -35,28 +35,28 @@ module "apim_apis" {
       url_template = "/example"
       description  = "Operation as example"
       headers      = [{
-          "name": "example-header",
-          "required": "true",
-          "type": "string",
-          "default_value": "any"
+        "name": "example-header",
+        "required": "true",
+        "type": "string",
+        "default_value": "any"
       }]
       query_parameters = [{
-          "name": "example_query_paramter",
-          "required": "true",
-          "type": "string",
-          "default_value": "any"
+        "name": "example_query_paramter",
+        "required": "true",
+        "type": "string",
+        "default_value": "any"
       }]
       template_parameter = {
-          "name": "example_template_parameter",
-          "required": "true",
-          "type": "string",
-          "default_value": "any"
+        "name": "example_template_parameter",
+        "required": "true",
+        "type": "string",
+        "default_value": "any"
       }
       response = {
-          "status_code": "200",
-          "description": "any"
+        "status_code": "200",
+        "description": "any"
       }
-    
+
     }
   ]
 }
@@ -102,3 +102,11 @@ This can be used to add the template paramter of each api operation. Template pa
 |required|Is this Template Parameter Required?| Yes       |
 |type|The Type of this Template Parameter, such as a string.| Yes       |
 |default_value|The default value for this Template Parameter.| No        |
+
+### Tag (optional)
+This can be used to add tags for each api operations. Following information needs to be provided for the tags:
+
+|Variable|Description| Required? |
+|:----------|:-------------|-----------|
+|name|The name which should be used for this API Management API Operation Tag. The name must be unique for each api operation.| Yes       |
+|display_name|The display name of the API Management API Operation Tag.| No 
