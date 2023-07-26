@@ -98,6 +98,10 @@ variable "api_operations" {
       status_code = string
       description = optional(string)
     }))
+    tag = optional(object({
+      name = string
+      display_name = string
+    }))
   }))
   description = "Details of each API Operation"
   default     = []
