@@ -83,7 +83,7 @@ resource "azurerm_api_management_api_operation" "apim_api_operation" {
 }
 
 resource "azurerm_api_management_api_operation_tag" "apim_api_tag" {
-  for_each         = { for operation in var.api_operations : operation.operation_id => operation }
+  for_each         = { for operation in var.api_operations : operation.tag => operation if operation != null }
   name             = each.value.tag.name
   api_operation_id = resource.azurerm_api_management_api_operation.apim_api_operation[each.value.operation_id].id
   display_name     = each.value.tag.display_name
