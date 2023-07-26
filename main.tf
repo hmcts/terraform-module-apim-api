@@ -81,6 +81,14 @@ resource "azurerm_api_management_api_operation" "apim_api_operation" {
     }
   }
 }
+
+resource "azurerm_api_management_api_operation_tag" "apim_api_tag" {
+  for_each         = { for operation in var.api_operations : operation.operation_id => operation }
+  name             = each.value.tag.name
+  api_operation_id = azurerm_api_management_api_operation.apim_api_operation.id
+  display_name     = each.value.tag.display_name
+}
+
 resource "azurerm_api_management_api_operation_policy" "apim_api_operation_policies" {
   for_each            = { for operation in var.api_operations : operation.operation_id => operation }
   operation_id        = each.value.operation_id
