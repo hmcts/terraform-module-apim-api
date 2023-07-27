@@ -56,6 +56,10 @@ module "apim_apis" {
         "status_code": "200",
         "description": "any"
       }
+      tag = {
+        "name": "example-tag",
+        "display_name": "example-tag"
+      }
 
     }
   ]
