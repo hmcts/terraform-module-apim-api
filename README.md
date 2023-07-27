@@ -109,4 +109,4 @@ This can be used to add tags for each api operations. Following information need
 |Variable|Description| Required? |
 |:----------|:-------------|-----------|
 |name|The name which should be used for this API Management API Operation Tag. The name must be unique for each api operation.| Yes       |
-|display_name|The display name of the API Management API Operation Tag.| No 
+|display_name|The display name of the API Management API Operation Tag.| Yes 
