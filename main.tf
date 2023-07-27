@@ -43,7 +43,52 @@ resource "azurerm_api_management_api_operation" "apim_api_operation" {
   method              = each.value.method
   url_template        = each.value.url_template
   description         = each.value.description
+
+  request {
+    dynamic "header" {
+      for_each = (each.value.headers == null) ? [] : each.value.headers
+      content {
+        name          = header.value["name"]
+        required      = header.value["required"]
+        type          = header.value["type"]
+        default_value = (header.value["default_value"] == null) ? null : header.value["default_value"]
+      }
+    }
+    dynamic "query_parameter" {
+      for_each = (each.value.query_parameters == null) ? [] : each.value.query_parameters
+      content {
+        name          = query_parameter.value["name"]
+        required      = query_parameter.value["required"]
+        type          = query_parameter.value["type"]
+        default_value = (query_parameter.value["default_value"] == null) ? null : query_parameter.value["default_value"]
+      }
+    }
+  }
+  dynamic "response" {
+    for_each = (each.value.response == null) ? [] : [1]
+    content {
+      status_code = each.value.response.status_code
+      description = (each.value.response.description == null) ? null : each.value.response.description
+    }
+  }
+  dynamic "template_parameter" {
+    for_each = (each.value.template_parameter == null) ? [] : [1]
+    content {
+      name          = each.value.template_parameter.name
+      required      = each.value.template_parameter.required
+      type          = each.value.template_parameter.type
+      default_value = (each.value.template_parameter.default_value == null) ? null : each.value.template_parameter.default_value
+    }
+  }
 }
+
+resource "azurerm_api_management_api_operation_tag" "apim_api_tag" {
+  for_each         = { for operation in var.api_operations : operation.operation_id => operation if can(operation.tag.name) }
+  name             = each.value.tag.name
+  api_operation_id = resource.azurerm_api_management_api_operation.apim_api_operation[each.value.operation_id].id
+  display_name     = each.value.tag.display_name
+}
+
 resource "azurerm_api_management_api_operation_policy" "apim_api_operation_policies" {
   for_each            = { for operation in var.api_operations : operation.operation_id => operation }
   operation_id        = each.value.operation_id
@@ -54,7 +99,6 @@ resource "azurerm_api_management_api_operation_policy" "apim_api_operation_polic
 
   depends_on = [azurerm_api_management_api_operation.apim_api_operation]
 }
-
 
 data "azurerm_api_management_product" "apim_product" {
   product_id          = "${var.product}-product-${local.env}"
