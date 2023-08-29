@@ -46,12 +46,12 @@ module "apim_apis" {
         "type": "string",
         "default_value": "any"
       }]
-      template_parameter = {
+      template_parameters = [{
         "name": "example_template_parameter",
         "required": "true",
         "type": "string",
         "default_value": "any"
-      }
+      }]
       response = {
         "status_code": "200",
         "description": "any"
@@ -98,8 +98,8 @@ This can be used to add the response of each api operation. Response block suppo
 |status_code|The HTTP Status Code. i.e. 201| Yes       |
 |description|IA description of the HTTP Response, which may include HTML tags.| No      |
 
-### Template Parameter (optional)
-This can be used to add the template paramter of each api operation. Template parameter block supports the following:
+### Template Parameters (optional)
+This can be used to add the template paramters of each api operation. Template parameters block supports the following:
 |Variable|Description| Required? |
 |:----------|:-------------|-----------|
 |name|The Name of this Template Parameter.| Yes       |
