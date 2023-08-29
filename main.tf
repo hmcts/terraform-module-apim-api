@@ -72,12 +72,12 @@ resource "azurerm_api_management_api_operation" "apim_api_operation" {
     }
   }
   dynamic "template_parameter" {
-    for_each = (each.value.template_parameter == null) ? [] : [1]
+    for_each = (each.value.template_parameters == null) ? [] : each.value.template_parameters
     content {
-      name          = each.value.template_parameter.name
-      required      = each.value.template_parameter.required
-      type          = each.value.template_parameter.type
-      default_value = (each.value.template_parameter.default_value == null) ? null : each.value.template_parameter.default_value
+      name          = template_parameter.value["name"]
+      required      = template_parameter.value["required"]
+      type          = template_parameter.value["type"]
+      default_value = (template_parameter.value["default_value"] == null) ? null : template_parameter.value["default_value"]
     }
   }
 }

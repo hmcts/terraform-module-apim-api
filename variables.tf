@@ -88,12 +88,12 @@ variable "api_operations" {
       type          = string
       default_value = optional(string)
     })))
-    template_parameter = optional(object({
+    template_parameters = optional(list(object({
       name          = string
       required      = string
       type          = string
       default_value = optional(string)
-    }))
+    })))
     response = optional(object({
       status_code = string
       description = optional(string)
