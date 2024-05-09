@@ -67,6 +67,18 @@ variable "policy_xml_link" {
   default     = null
 }
 
+variable "wsdl_endpoint" {
+  type        = string
+  description = "WSDL endpoint name"
+  default     = null
+}
+
+variable "wsdl_service_name" {
+  type        = string
+  description = "WSDL service name"
+  default     = null
+}
+
 
 variable "api_operations" {
   type = list(object({
@@ -97,6 +109,9 @@ variable "api_operations" {
     response = optional(object({
       status_code = string
       description = optional(string)
+    }))
+    representation = optional(object({
+      content_type = string
     }))
     tag = optional(object({
       name         = string

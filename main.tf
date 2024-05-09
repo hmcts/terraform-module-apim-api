@@ -22,6 +22,14 @@ resource "azurerm_api_management_api" "apim_api" {
   import {
     content_format = var.api_content_format
     content_value  = var.api_content_value
+
+    dynamic "wsdl_selector" {
+      for_each = (var.api_content_format == 'wsdl') ? [1] : []
+      content {
+        endpoint_name = var.wsdl_endpoint
+        service_name  = var.wsdl_service_name
+      }
+    }
   }
 }
 
@@ -45,6 +53,13 @@ resource "azurerm_api_management_api_operation" "apim_api_operation" {
   description         = each.value.description
 
   request {
+    dynamic "representation" {
+      for_each = (each.value.representation == null) ? [] : [1]
+      content {
+        content_type = each.value.representation.content_type
+      }
+    }
+
     dynamic "header" {
       for_each = (each.value.headers == null) ? [] : each.value.headers
       content {
