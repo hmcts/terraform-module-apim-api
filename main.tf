@@ -24,7 +24,7 @@ resource "azurerm_api_management_api" "apim_api" {
     content_value  = var.api_content_value
 
     dynamic "wsdl_selector" {
-      for_each = (var.api_content_format == "wsdl") ? [1] : []
+      for_each = (var.api_content_format == "wsdl" || var.api_content_format == "wsdl-link") ? [1] : []
       content {
         endpoint_name = var.wsdl_endpoint
         service_name  = var.wsdl_service_name
